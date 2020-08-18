@@ -2,7 +2,6 @@ package application;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -11,9 +10,11 @@ import java.util.stream.Collectors;
 public class AverageSensor implements Sensor {
 
     private List<Sensor> sensorList;
+    private List<Integer> readingsList;
 
     public AverageSensor() {
         this.sensorList = new ArrayList<>();
+        this.readingsList = new ArrayList<>();
     }
 
     @Override
@@ -45,6 +46,8 @@ public class AverageSensor implements Sensor {
                 .mapToInt(sensor -> sensor.read())
                 .average()
                 .getAsDouble();
+        
+        this.readingsList.add(average);
 
         return average;
     }
@@ -55,12 +58,6 @@ public class AverageSensor implements Sensor {
     }
 
     public List<Integer> readings() {
-        ArrayList<Integer> list = new ArrayList<>();
-        if (!this.sensorList.isEmpty()) {
-            this.sensorList.stream().mapToInt(sensor -> sensor.read())
-                    .forEach(value -> list.add(value));            
-        }
-
-        return list;
+       return this.readingsList;
     }
 }
